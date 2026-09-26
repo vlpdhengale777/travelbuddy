@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Buddy</title>
+
+<!-- Bootstrap CSS -->
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Segoe UI, Tahoma;
+  background: #f5f5f5;
+}
+
+.navbar {
+  background: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: initial;
+  font-family: 'Brush Script MT', cursive;
+  color: #0245f0;
+  white-space: nowrap;
+  padding-right: 10px;
+  text-align: center;
+}
+
+.explore {
+  background: linear-gradient(135deg, #FF6B35, #fbcf4b);
+  color: #fff;
+  padding: 70px 20px;
+  text-align: center;
+  text-decoration-line: inherit;
+}
+
+.explore h1 {
+  font-size: 5em;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 1.2em;
+  opacity: .9;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.step-container {
+  background: #fff;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+  text-align: center;
+}
+
+.step-container h2 {
+  color: #FF6B35;
+  margin-bottom: 25px;
+  font-size: 2em;
+}
+
+.location-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  border: 2px solid #FF6B35;
+  border-radius: 10px;
+  font-size: 1.1em;
+  margin: 20px auto;
+  display: block;
+}
+
+.btn {
+  padding: 15px 40px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1em;
+  cursor: pointer;
+  background: #FF6B35;
+  color: #fff;
+  margin: 10px;
+  transition: all .3s;
+}
+
+.btn:hover {
+  background: #F7931E;
+  transform: translateY(-2px);
+}
+
+.state-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.state-card {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all .3s;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+}
+
+.state-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .3);
+}
+
+.city-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.city-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, .15);
+  cursor: pointer;
+  transition: all .3s;
+}
+
+.city-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .25);
+}
+
+.city-image {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.city-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, .95);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: .85em;
+  font-weight: bold;
+  color: #FF6B35;
+}
+
+.city-content {
+  padding: 20px;
+}
+
+.city-content h3 {
+  color: #333;
+  margin-bottom: 8px;
+  font-size: 1.3em;
+}
+
+.city-content p {
+  color: #666;
+  font-size: .95em;
+}
+
+.detail-page {
+  display: none;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+  overflow: hidden;
+}
+
+.detail-page.active {
+  display: block;
+}
+
+.detail-hero {
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.detail-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, .8), transparent);
+  color: #fff;
+  padding: 40px;
+}
+
+.detail-overlay h1 {
+  font-size: 2.8em;
+  margin-bottom: 10px;
+}
+
+.detail-content {
+  padding: 40px;
+}
+
+.back-btn {
+  margin-bottom: 25px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: #FF6B35;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.back-btn:hover {
+  background: #F7931E;
+}
+
+.detail-section {
+  margin-bottom: 30px;
+}
+
+.detail-section h3 {
+  color: #FF6B35;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+}
+
+.detail-section p {
+  color: #555;
+  line-height: 1.8;
+  font-size: 1.05em;
+}
+
+.info-box {
+  background: #f0f4ff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.info-box strong {
+  color: #FF6B35;
+  font-size: 1.1em;
+}
+
+.transport-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.transport-list span {
+  background: #667eea;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: .9em;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.image-gallery img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+.transport-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-right: 8px;
+}
+
+.transport-btn:hover {
+  background: #4f5bd5;
+}
+
+.transport-panel {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f3f6ff;
+  border-radius: 10px;
+  display: none;
+}
+
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.image-gallery img {
+  width: 100%;
+  height: 260px;     
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.image-gallery img:hover {
+  transform: scale(1.05);
+}
+.zoom-img {
+  transform: scale(1.2);
+  transition: 0.3s;
+}
+
+
+
+.city-video-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.city-video-section .bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 1;
+}
+
+.city-content-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+}
+
+.city-video-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+
+#selectedStateName {
+  color: #fff;
+}
+
+
+
+.state-video-section {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.bg-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 1;
+}
+
+.state-content-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  color: white;
+}
+
+.state-video-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">⛱️Travel Buddie</div>
+    <marquee behavior="scroll" direction="left" scrollamount="10" style="font-size:1.7em;color:#30873b;">Discover amazing destinations across India tailored just for you!</marquee>
+  </div>
+</nav>
+
+<div class="explore">
+  <h1>--Explore Incredible India--</h1>
+  <p>Plan your perfect journey from your location</p>
+</div>
+
+<div class="container">
+
+  <div id="locationStep" class="step-container">
+    <h2>📍 Where are you starting from?</h2>
+    <input type="text" id="userLocation" class="location-input" placeholder="Enter your city (e.g., Mumbai, Delhi)">
+    <button class="btn" onclick="saveLocation()">Continue</button>
+  </div>
+
+
+  <div id="stateStep" class="step-container hidden state-video-section">
+
+
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="https://assets.mixkit.co/videos/5363/5363-720.mp4" type="video/mp4">
+  </video>
+
+
+  <div class="state-content-wrapper">
+    <h2>Choose a State</h2>
+    <div id="stateGrid" class="state-grid"></div>
+  </div>
+
+</div>
+
+
+
+  <div id="cityStep" class="step-container hidden city-video-section">
+
+
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="https://assets.mixkit.co/videos/41576/41576-720.mp4" type="video/mp4">
+  </video>
+
+
+  <div class="city-content-wrapper">
+    <button class="back-btn" onclick="backToStates()">← Back to States</button>
+    <h2 id="selectedStateName">Popular Cities</h2>
+    <div id="cityGrid" class="city-grid"></div>
+  </div>
+
+</div>
+
+
+
+  <div id="detailPage" class="detail-page"></div>
+</div>
+
+<script>
+let userLocation="";
+
+const destinationsData={
+  "Goa":[
+    {city:"Panaji",description:"Capital city with Portuguese heritage, churches and vibrant markets.",budget:"₹12,000 - ₹20,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500", gallery: [
+    "https://d26dp53kz39178.cloudfront.net/media/uploads/Travel_Guide_Images/Panaji_result.webp",
+    "https://a.travel-assets.com/findyours-php/viewfinder/images/res70/206000/206665-Panaji.jpg",
+    "https://c8.alamy.com/comp/DR35AA/view-of-panaji-city-DR35AA.jpg"]},
+    {city:"Calangute",description:"Famous beach destination with water sports and nightlife.",budget:"₹15,000 - ₹25,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=500", gallery: [
+    "https://s7ap1.scene7.com/is/image/incredibleindia/calangute-beach-goa-7-musthead-hero?qlt=82&ts=1742168166188",
+    "https://content.r9cdn.net/rimg/dimg/0b/b2/7d5f811e-city-55845-166ea36604c.jpg?width=1366&height=768&xhint=3578&yhint=1750&crop=true",
+    "https://t4.ftcdn.net/jpg/01/79/74/15/360_F_179741516_TKiO8NhTavifEC9zihhczIpQi2APS7ul.jpg"]},
+    {city:"Old Goa",description:"Historic area with beautiful churches and colonial architecture.",budget:"₹10,000 - ₹18,000",duration:"2 days",transports:["Road","Train"],image:"https://static.toiimg.com/thumb/51876683.cms?resizemode=75&width=1200&height=900", gallery: [
+    "https://www.shutterstock.com/image-photo/goa-india-february-20-2025-260nw-2618607593.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8BQkoHP90PGLIv5BG-_B0LdGbi8dYDP_-WA&s",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReo7ypWN_L1WB0e7MsH42Zu-4djq8Zv4DYhQ&s"]}
+    
+  ],
+  "Himachal Pradesh":[
+    {city:"Manali",description:"Hill station known for snow, adventure sports and scenic beauty.",budget:"₹12,000 - ₹20,000",duration:"4-5 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500", gallery: [
+    "https://images.unsplash.com/photo-1712388430474-ace0c16051e2?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFuYWxpfGVufDB8fDB8fHww",
+    "https://thumbs.dreamstime.com/b/manali-leh-road-baralacha-himachal-pradesh-india-348660610.jpg",
+    "https://manalitourism.co.in/images/places-to-visit/headers/one-day-manali-top-places-to-visit-header-manali-tourism.jpg.jpg"]},
+    {city:"Shimla",description:"Colonial hill station with Mall Road and toy train.",budget:"₹10,000 - ₹18,000",duration:"3-4 days",transports:["Road","Train"],image:"https://thumbs.dreamstime.com/b/shimla-india-shimla-aerial-view-capital-city-indian-state-himachal-pradesh-located-northern-india-114069361.jpg", gallery: [
+    "https://s3.india.com/wp-content/uploads/2025/06/Shimla-During-Monsoon.jpg##image/jpg",
+    "https://plus.unsplash.com/premium_photo-1697729733902-f8c92710db07?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2hpbWxhJTIwaW5kaWF8ZW58MHx8MHx8fDA%3D",
+    "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-674x446/13/f6/e3/e8.jpg"]},
+    {city:"Dharamshala",description:"Spiritual town with Tibetan culture and mountain views.",budget:"₹11,000 - ₹19,000",duration:"3-4 days",transports:["Road","Flight"],image:"https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=500", gallery: [
+    "https://images.unsplash.com/photo-1622225074638-1d80c0388697?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGhhcmFtc2hhbGF8ZW58MHx8MHx8fDA%3D",
+    "https://w0.peakpx.com/wallpaper/489/899/HD-wallpaper-dharamshala-tour-packages-dharamshala-tourism-dharamshala-travel-guide-tourist-attractions-in-dharamshala-top-places-to-visit-in-dharamshala.jpg",
+    "https://taxibazaar.in/assets/images/blog/blog2.jpg"]}
+  ],
+  "Rajasthan":[
+    {city:"Jaipur",description:"The Pink City famous for forts, palaces and heritage.",budget:"₹10,000 - ₹18,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1599661046289-e31897846e41?w=500", gallery: [
+    "https://media.istockphoto.com/id/1398087835/photo/pink-palace-hawa-mahal-jaipur-india-beautiful-sunset-view.jpg?s=612x612&w=0&k=20&c=S8X6bk4Mdp0xu624dFZCHfobotdwdIp7K1FEQJV6hkI=",
+    "https://media.istockphoto.com/id/635726330/photo/nahargarh-fort.jpg?s=612x612&w=0&k=20&c=z1hztb9BT6YhxT--G_cW8hBmBHWzrFdwbfM0Pc2jATI=",
+    "https://wallpapers.com/images/hd/jaipur-city-buildings-and-hills-yo6kan12f4lycuy0.jpg"]},
+    {city:"Udaipur",description:"City of Lakes with romantic palaces and heritage hotels.",budget:"₹14,000 - ₹24,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://media.istockphoto.com/id/514102692/photo/udaipur-city-palace-in-rajasthan-state-of-india.jpg?s=612x612&w=0&k=20&c=bYRDPOuf6nFgghl6VAnCn__22SFyu_atC_fiSCzVNtY=", gallery: [
+    "https://images.pexels.com/photos/17831363/pexels-photo-17831363/free-photo-of-city-palace-in-udaipur.jpeg",
+    "https://thumbs.dreamstime.com/b/city-palace-pichola-lake-night-udaipur-rajasthan-india-asia-30769223.jpg",
+    "https://t4.ftcdn.net/jpg/04/17/05/91/360_F_417059111_qvQffOatmSqZlaDlYhxNcYI80QdWoIQU.jpg"]},
+    {city:"Jaisalmer",description:"Golden city in Thar Desert with stunning sand dunes.",budget:"₹12,000 - ₹22,000",duration:"3-4 days",transports:["Road","Train"],image:"https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500", gallery: [
+    "https://t4.ftcdn.net/jpg/06/22/40/25/360_F_622402509_WQHZEHTXhCyDVWSfcH6QmtcIHFXuSXST.jpg",
+    "https://media.istockphoto.com/id/465538873/photo/scenic-jaisalmer-fort-with-a-sunset.jpg?s=612x612&w=0&k=20&c=gCMQyVskovprPeNxTI9D_euUGIvrHZtrAifbzNqlh4Q=",
+    "https://res.cloudinary.com/kmadmin/image/upload/v1723014813/kiomoi/Jaisalmer_Fort_%282%29_9552.jpg"]}
+  ],
+  "Kerala":[
+    {city:"Munnar",description:"Lush green hill station with tea gardens and waterfalls.",budget:"₹14,000 - ₹22,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=500", gallery: [
+    "https://t4.ftcdn.net/jpg/01/28/57/63/360_F_128576315_ejpjSy7S7fsH275jCDuUtykU1O3B6rUb.jpg",
+    "https://www.keralatourism.org/_next/image/?url=http%3A%2F%2F127.0.0.1%2Fktadmin%2Fimg%2Fpages%2Fmobile%2Fmagical-visuals-of-munnar-1728565480_1f8edd809dd32b621dde.webp&w=3840&q=75",
+    "https://b2bzend.s3.ap-south-1.amazonaws.com/img/96597/package/images/mesmerizing-kerala_1717763864"]},
+    {city:"Alleppey",description:"Backwater paradise famous for houseboat cruises.",budget:"₹16,000 - ₹26,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=500", gallery: [
+    "https://media.istockphoto.com/id/1017900834/photo/houseboats-on-the-backwaters-of-kerala-in-alappuzha.jpg?s=612x612&w=0&k=20&c=4PV5DImAWxw0I218zHEQJBoGdO5RPhnlrGrlW86mgB8=",
+    "https://images.pexels.com/photos/962464/pexels-photo-962464.jpeg?cs=srgb&dl=pexels-godson-bright-352845-962464.jpg&fm=jpg",
+    "https://cdn.pixabay.com/photo/2019/01/19/11/22/alleppey-3941573_1280.jpg"]},
+    {city:"Kochi",description:"Port city with colonial history and Chinese fishing nets.",budget:"₹12,000 - ₹20,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=500", gallery: [
+    "https://media.istockphoto.com/id/478247780/photo/kochi-chinese-fishnets-in-twilight-kerala-fort-kochin.jpg?s=612x612&w=0&k=20&c=G-ZopML7MBA5Yf1fYREeqkbWPnpiDgEG76KpEmZ65GY=",
+    "https://images.pexels.com/photos/980180/pexels-photo-980180.jpeg?cs=srgb&dl=pexels-rajeshx8-980180.jpg&fm=jpg",
+    "https://plus.unsplash.com/premium_photo-1697729597066-7b3d09b6dab7?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8a29jaGl8ZW58MHx8MHx8fDA%3D"]}
+  ],
+  "Uttar Pradesh":[
+    {city:"Varanasi",description:"One of the oldest cities, spiritual capital of India.",budget:"₹8,000 - ₹15,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=500", gallery: [
+    "https://media.istockphoto.com/id/537988165/photo/varanasi.jpg?s=612x612&w=0&k=20&c=fFpEL17MiQJx5NkkNIVrTsesd2E8b04SCgzjfhUmQ7g=",
+    "https://www.shutterstock.com/shutterstock/videos/5054465/thumb/1.jpg",
+    "https://cdn.pixabay.com/photo/2018/01/16/20/39/india-3086808_1280.jpg"]},
+    {city:"Agra",description:"Home to the iconic Taj Mahal and Mughal heritage.",budget:"₹9,000 - ₹16,000",duration:"2 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1564507592333-c60657eea523?w=500", gallery: [
+    "https://cdn.pixabay.com/photo/2018/08/01/19/52/india-3578009_1280.jpg",
+    "https://images.unsplash.com/photo-1591018653367-9c01498b3320?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWdyYSUyMGZvcnQlMkMlMjBhZ3JhJTJDJTIwaW5kaWF8ZW58MHx8MHx8fDA%3D",
+    "https://s7ap1.scene7.com/is/image/incredibleindia/fatehpur-sikri-agra-uttar-pradesh-hero?qlt=82&ts=1726650447357"]},
+    {city:"Lucknow",description:"City of Nawabs with rich culture and cuisine.",budget:"₹10,000 - ₹17,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1605649487212-47a4a0c08a6c?w=500", gallery: [
+    "https://media.istockphoto.com/id/2167395972/photo/lucknow-uttar-pradesh-india-19-june-2022-rumi-darwaza-gate-in-islamic-architecture-built-by.jpg?s=612x612&w=0&k=20&c=AfV0BcNrODmU4uyd63gp_kQfYB66QOUkASN9YXvzufE=",
+    "https://thumbs.dreamstime.com/b/shaan-e-awadh-lucknow-view-old-capital-city-state-uttar-pradesh-india-was-one-major-centres-69080039.jpg",
+    "https://www.tourindiawithdriver.com/UPLOAD/1274_lucknow-India.jpg"]}
+  ],
+  "West Bengal":[
+    {city:"Darjeeling",description:"Famous for tea plantations and Himalayan views.",budget:"₹13,000 - ₹21,000",duration:"4-5 days",transports:["Road","Train","Flight"],image:"https://t4.ftcdn.net/jpg/02/57/98/85/360_F_257988556_UbxCEwXDBjknhWhNAYmY3wuxnRHxz1vK.jpg", gallery: [
+    "https://images.unsplash.com/photo-1622308644420-b20142dc993c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZGFyamVlbGluZ3xlbnwwfHwwfHx8MA%3D%3D",
+    "https://media.istockphoto.com/id/1129899951/photo/darjeeling-and-kangchenjunga-on-the-background-kanchenjunga-is-the-third-highest-mountain-in.jpg?s=612x612&w=0&k=20&c=p3mD29QG5VMkOtG3DhqbcJXEuVBCZjHOtdbWQFqmAJY=",
+    "https://t4.ftcdn.net/jpg/02/57/98/85/360_F_257988556_UbxCEwXDBjknhWhNAYmY3wuxnRHxz1vK.jpg"]},
+    {city:"Kolkata",description:"Cultural capital with colonial architecture and art.",budget:"₹11,000 - ₹19,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1558431382-27e303142255?w=500", gallery: [
+    "https://t4.ftcdn.net/jpg/02/10/23/09/360_F_210230989_aQg2F7Bpg05f0A7Bl1ZxP028PMvBvdGL.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcST7CHN2u29cDYipS7RmGyE4BZXQvMV54ItSQ&s",
+    "https://i.ytimg.com/vi/PgqFHwj6v5M/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBp2cVjuCuX96tcMiLcYBVIpO8RRg"]},
+    {city:"Sundarbans",description:"Mangrove forests and home to Royal Bengal Tigers.",budget:"₹15,000 - ₹25,000",duration:"2-3 days",transports:["Road","Train"],image:"https://images.unsplash.com/photo-1706459671567-43529d418cd1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c3VuZGFyYmFufGVufDB8fDB8fHww", gallery: [
+    "https://t4.ftcdn.net/jpg/13/32/41/71/360_F_1332417163_w5N1HGpGMmQbSZ5A1K7rtA3k708j87x3.jpg",
+    "https://t4.ftcdn.net/jpg/03/23/34/09/360_F_323340944_0VjHFqQrx34zBVYWBF4XmCBIECKgBDX2.jpg",
+    "https://res.cloudinary.com/roundglass/image/upload/f_auto/q_auto/f_auto/c_limit,w_auto:breakpoints_200_2560_100_5:1265/v1584346415/roundglass/sustain/Sundarbans_Bengal-tiger_Soumyajit-Nandy4-copy_e24jma.jpg"]}
+  ],
+  "Karnataka":[
+    {city:"Hampi",description:"UNESCO heritage site with ancient ruins and temples.",budget:"₹10,000 - ₹17,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://thumbs.dreamstime.com/b/virupaksha-temple-hampi-view-hemakuta-hill-sunset-karnataka-india-41888288.jpg", gallery: [
+    "https://t4.ftcdn.net/jpg/05/14/35/87/360_F_514358705_s8m53VS3BCSaCClrbOnOGyG5jnbc3bW8.jpg",
+    "https://cdn.pixabay.com/photo/2018/06/09/13/10/hampi-3464359_1280.jpg",
+    "https://w0.peakpx.com/wallpaper/151/987/HD-wallpaper-virupaksha-temple-hampi-karnataka-india-bing.jpg"]},
+    {city:"Coorg",description:"Scotland of India with coffee plantations and waterfalls.",budget:"₹13,000 - ₹21,000",duration:"3-4 days",transports:["Road","Flight"],image:"https://t3.ftcdn.net/jpg/07/62/70/38/360_F_762703827_rK8mpN5jYE254CrhzLJvz02I0EjhTqN8.jpg", gallery: [
+    "https://tuskertrailcoorg.com/wp-content/uploads/2022/04/mandalpatti-trek-coorg.webp",
+    "https://img.freepik.com/free-photo/india-fog-tea-cool-tea-leaves_1376-20.jpg?semt=ais_hybrid&w=740&q=80",
+    "https://t3.ftcdn.net/jpg/07/62/70/38/360_F_762703827_rK8mpN5jYE254CrhzLJvz02I0EjhTqN8.jpg"]},
+    {city:"Mysore",description:"Palace city with royal heritage and sandalwood.",budget:"₹11,000 - ₹18,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS88cWwWPKr5U0c3kfTmhnx2D6qNeuZv0S3Aw&s", gallery: [
+    "https://images.pexels.com/photos/4124381/pexels-photo-4124381.jpeg?cs=srgb&dl=pexels-mohit-suthar-1271363-4124381.jpg&fm=jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS88cWwWPKr5U0c3kfTmhnx2D6qNeuZv0S3Aw&s",
+    "https://t4.ftcdn.net/jpg/05/51/95/23/360_F_551952385_Wp4Es8Ktn0jhyn0LEK5lGH1Xed83brUi.jpg"]}
+  ],
+  "Maharashtra":[
+    {city:"Mumbai",description:"Financial capital with beaches, Bollywood and nightlife.",budget:"₹15,000 - ₹25,000",duration:"3-4 days",transports:["Road","Train","Flight"],image:"https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=500", gallery: [
+    "https://t3.ftcdn.net/jpg/03/55/64/04/360_F_355640480_FKKv2BQwqY6sMa6jmEGVPnEndX1GPtJU.jpg",
+    "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bXVtYmFpfGVufDB8fDB8fHww",
+    "https://media.istockphoto.com/id/1325342016/photo/mumbai-skyline-wadala-sewri-lalbaug.jpg?s=612x612&w=0&k=20&c=Zu7P_lttSwIU5rLJFdPmhXW4Hy-C64bAhxA7V28LvJQ="]},
+    {city:"Lonavala",description:"Hill station near Mumbai with caves and waterfalls.",budget:"₹8,000 - ₹14,000",duration:"2-3 days",transports:["Road","Train"],image:"https://www.luxurytrailsofindia.com/wp-content/uploads/2016/12/lonavalamaharashtraindia.jpg?w=1200", gallery: [
+    "https://www.trawell.in/blog/wp-content/uploads/2024/07/lonavala-main-730x410.jpg",
+    "https://www.shutterstock.com/image-photo/aug-2018-lonavala-pune-india-260nw-1163701087.jpg",
+    "https://images.pexels.com/photos/30317431/pexels-photo-30317431/free-photo-of-scenic-lonavala-highway-through-the-hills.jpeg"]},
+    {city:"Aurangabad",description:"Gateway to Ajanta and Ellora caves.",budget:"₹10,000 - ₹17,000",duration:"2-3 days",transports:["Road","Train","Flight"],image:"https://t4.ftcdn.net/jpg/01/05/09/59/360_F_105095956_5s25gafHtMkP7gawPhhfPprzyj3PDiB9.jpg", gallery: [
+    "https://www.shutterstock.com/shutterstock/videos/1104396855/thumb/11.jpg?ip=x480",
+    "https://t4.ftcdn.net/jpg/01/05/09/59/360_F_105095956_5s25gafHtMkP7gawPhhfPprzyj3PDiB9.jpg",
+    "https://media.istockphoto.com/id/514991038/photo/ellora-caves-in-india.jpg?s=612x612&w=0&k=20&c=mGpgTujahN8VUTQnKei3T40Lh3AOMK_XKM5727eOUwY="]}
+  ]
+};
+
+const statesList=Object.keys(destinationsData);
+
+function saveLocation(){
+  userLocation=document.getElementById("userLocation").value.trim();
+  if(!userLocation){alert("Please enter your location");return;}
+  
+  document.getElementById("locationStep").classList.add("hidden");
+  document.getElementById("stateStep").classList.remove("hidden");
+  renderStates();
+}
+
+function renderStates(){
+  const stateGrid=document.getElementById("stateGrid");
+  stateGrid.innerHTML=statesList.map(state=>
+    `<div class="state-card" onclick="selectState('${state}')">${state}</div>`
+  ).join("");
+}
+
+function selectState(state){
+  document.getElementById("stateStep").classList.add("hidden");
+  document.getElementById("cityStep").classList.remove("hidden");
+  document.getElementById("selectedStateName").textContent=`Popular Cities in ${state}`;
+  renderCities(state);
+}
+
+function renderCities(state){
+  const cityGrid=document.getElementById("cityGrid");
+  const cities=destinationsData[state];
+  
+  cityGrid.innerHTML=cities.map((city,index)=>
+    `<div class="city-card" onclick="showCityDetail('${state}',${index})">
+      <div class="city-image" style="background-image:url('${city.image}')">
+        <div class="city-badge">🔥 Popular</div>
+      </div>
+      <div class="city-content">
+        <h3>${city.city}</h3>
+        <p>Duration: ${city.duration}</p>
+      </div>
+    </div>`
+  ).join("");
+}
+
+function showCityDetail(state,index){
+  const city=destinationsData[state][index];
+  const detailPage=document.getElementById("detailPage");
+  
+  document.getElementById("cityStep").classList.add("hidden");
+  detailPage.classList.add("active");
+  
+  detailPage.innerHTML=`
+    <div class="detail-hero" style="background-image:url('${city.image}')">
+      <div class="detail-overlay">
+        <h1>Visit ${city.city}</h1>
+        <p>📍 ${city.city}, ${state}, India</p>
+      </div>
+    </div>
+    <div class="detail-content">
+      <button class="back-btn" onclick="backToCities('${state}')">← Back to Cities</button>
+      
+      <div class="detail-section">
+        <h3>About ${city.city}</h3>
+        <p>${city.description}</p>
+      </div>
+
+      <div class="info-box">
+        <strong>From:</strong> ${userLocation} → ${city.city}<br><br>
+        <strong>💰 Budget:</strong> ${city.budget}<br><br>
+        <strong>⏱️ Recommended Duration:</strong> ${city.duration}
+      </div>
+
+      <div class="detail-section">
+  <h3>How to Reach from ${userLocation}</h3>
+
+  <div class="transport-list">
+    <button class="transport-btn" data-type="road">Road</button>
+    <button class="transport-btn" data-type="train">Train</button>
+    <button class="transport-btn" data-type="flight">Flight</button>
+
+  </div>
+
+  <div id="transportPanel" class="transport-panel"></div>
+</div>
+
+
+      <div class="detail-section">
+        <h3>Gallery</h3>
+        <div class="image-gallery">
+            ${city.gallery.map(img => `
+            <img src="${img}" alt="${city.city}">
+            `).join("")}
+        </div>
+
+      </div>
+    </div>`;
+  
+  window.scrollTo(0,0);
+}
+
+function backToStates(){
+  document.getElementById("cityStep").classList.add("hidden");
+  document.getElementById("stateStep").classList.remove("hidden");
+}
+
+function backToCities(state){
+  document.getElementById("detailPage").classList.remove("active");
+  document.getElementById("cityStep").classList.remove("hidden");
+  renderCities(state);
+}
+
+function showTransport(type){
+  const panel = document.getElementById("transportPanel");
+  panel.style.display = "block";
+
+  if(type === "road"){
+    panel.innerHTML = `
+      <strong>🚗 Road Travel</strong><br>
+      Best via highways and state roads.<br>
+      Approx Budget: ₹2,000 – ₹4,000
+    `;
+  }
+
+  if(type === "train"){
+    panel.innerHTML = `
+      <strong>🚆 Train Travel</strong><br>
+      Nearest railway station available.<br>
+      Approx Budget: ₹1,500 – ₹3,000
+    `;
+  }
+
+  if(type === "flight"){
+    panel.innerHTML = `
+      <strong>✈️ Flight Travel</strong><br>
+      Flights available to nearest airport.<br>
+      Approx Budget: ₹4,000 – ₹7,000
+    `;
+  }
+}
+
+$(document).on("click", ".transport-btn", function () {
+
+  const type = $(this).data("type");
+  const panel = $("#transportPanel");
+
+  
+  if (panel.is(":visible") && panel.data("active") === type) {
+    panel.slideUp();
+    panel.data("active", "");
+    return;
+  }
+
+  let content = "";
+
+  if (type === "road") {
+    content = `
+      <strong>🚗 Road Travel</strong><br>
+      Highways, buses & cars<br>
+      Approx Budget: ₹2,000 – ₹4,000
+    `;
+  }
+
+  if (type === "train") {
+    content = `
+      <strong>🚆 Train Travel</strong><br>
+      Nearest railway station available<br>
+      Approx Budget: ₹1,500 – ₹3,000
+    `;
+  }
+
+  if (type === "flight") {
+    content = `
+      <strong>✈️ Flight Travel</strong><br>
+      Flights depend on city & season<br>
+      Approx Budget: ₹4,000 – ₹7,000
+    `;
+  }
+
+  panel
+    .html(content)
+    .data("active", type)
+    .slideDown();
+});
+
+</script>
+
+<footer class="bg-dark text-light mt-5">
+  <div class="container py-4">
+    <div class="row">
+
+
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">🌍 Travel Buddy</h5>
+        <p class="small">
+          Discover amazing destinations across India and plan your perfect journey with ease.
+        </p>
+      </div>
+
+     
+      <div class="col-md-4 mb-3">
+        <h5 class="fw-bold">Contact</h5>
+        <p class="small mb-1">📧 travelbuddy@gmail.com</p>
+        <p class="small mb-1">📞 +91 9876543210</p>
+        <p class="small">📍 India</p>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary">
+
+    <div class="text-center small">
+      © 2026 Travel Buddy | Designed with ❤️
+    </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
